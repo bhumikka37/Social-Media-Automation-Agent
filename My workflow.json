@@ -25,7 +25,7 @@
         -2544,
         -832
       ],
-      "id": "4d284ef5-1277-4c2f-83e8-df7a79286808",
+      "id": "ID",
       "name": "On form submission",
       "webhookId": "dec8f317-eed4-47aa-81df-4d2ebe3dd5d1"
     },
@@ -49,7 +49,7 @@
         -2272,
         -768
       ],
-      "id": "0b4a57bf-c036-4f3d-81bb-58e2f81b3942",
+      "id": "ID",
       "name": "Basic LLM Chain"
     },
     {
@@ -68,7 +68,7 @@
         -2464,
         -544
       ],
-      "id": "009a01e6-c083-4b37-91be-2cba707dd01a",
+      "id": "ID",
       "name": "OpenAI Chat Model",
       "credentials": {
         "openAiApi": {
@@ -89,7 +89,7 @@
         -2256,
         -496
       ],
-      "id": "fa7f1e03-0f8a-4702-8fcc-3bd414b1004c",
+      "id": "ID",
       "name": "Item List Output Parser"
     },
     {
@@ -101,7 +101,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+              "value": "Your API"
             }
           ]
         },
@@ -117,7 +117,7 @@
         -1584,
         -496
       ],
-      "id": "278c628b-d7e5-4bcb-b2da-2fb42bf15866",
+      "id": "ID",
       "name": "Text to Image"
     },
     {
@@ -130,7 +130,7 @@
         -1264,
         -464
       ],
-      "id": "4bf3ed9c-1b78-43a5-865a-a7db332fcc98",
+      "id": "ID",
       "name": "wait 3 mins",
       "webhookId": "2a601338-d32d-4feb-8ad2-89674e916b1f"
     },
@@ -142,7 +142,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+              "value": "API KEY"
             }
           ]
         },
@@ -166,7 +166,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+              "value": "API KEY"
             }
           ]
         },
@@ -182,7 +182,7 @@
         -2112,
         -160
       ],
-      "id": "850e7ad6-87cb-43c6-98b2-ac7764488ef5",
+      "id": "ID",
       "name": "Image to Video"
     },
     {
@@ -195,7 +195,7 @@
         -1840,
         -160
       ],
-      "id": "f7f2fa48-9098-45a6-ad78-5031dcf6d6c9",
+      "id": "ID",
       "name": "Wait 8 mins",
       "webhookId": "d4837017-0292-486a-b4eb-7630cbd6248b"
     },
@@ -207,7 +207,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+              "value": "API KEY"
             }
           ]
         },
@@ -219,7 +219,7 @@
         -736,
         -144
       ],
-      "id": "dd3ddb80-3094-4a59-b3da-01c2c28f499e",
+      "id": "ID",
       "name": "Get Video"
     },
     {
@@ -245,7 +245,7 @@
         -2080,
         -496
       ],
-      "id": "b2174521-1c44-444e-b2c9-8650228d7dbd",
+      "id": "ID",
       "name": "Generate Prompts",
       "credentials": {
         "openAiApi": {
@@ -266,7 +266,7 @@
         },
         "folderId": {
           "__rl": true,
-          "value": "1NSHoKr69t594exhFd3Z7u4CEfvXMfHKj",
+          "value": "value",
           "mode": "list",
           "cachedResultName": "n8n-assessment",
           "cachedResultUrl": "https://drive.google.com/drive/folders/1NSHoKr69t594exhFd3Z7u4CEfvXMfHKj"
@@ -279,7 +279,7 @@
         -128,
         -64
       ],
-      "id": "ab8a67de-51c6-4a6a-93e9-7394edfc5385",
+      "id": "ID",
       "name": "Upload file",
       "credentials": {
         "googleDriveOAuth2Api": {
@@ -301,7 +301,7 @@
         624,
         -192
       ],
-      "id": "15d40955-bb32-427c-9ead-65647546e467",
+      "id": "ID",
       "name": "Merge Video Content"
     },
     {
@@ -314,7 +314,7 @@
         80,
         176
       ],
-      "id": "cf12d4f1-fd14-4435-a6fe-0c662b36ec73",
+      "id": "ID",
       "name": "Code"
     },
     {
@@ -326,7 +326,7 @@
           "parameters": [
             {
               "name": "Authorization",
-              "value": "Bearer 7b51350006c14db48dc9d98e8ed2e705e0cf2746a70435028ecd09da830b8964a1718341c42e51005001e42ce29187e8"
+              "value": "Bearer"
             },
             {
               "name": "Content-Type",
@@ -345,7 +345,7 @@
         448,
         192
       ],
-      "id": "59c85f66-7844-4aad-90ff-8c0d5899bd6b",
+      "id": "ID",
       "name": "Render Video"
     },
     {
@@ -356,9 +356,9 @@
         704,
         224
       ],
-      "id": "2185183f-b4fa-401e-8767-4f93e8192742",
+      "id": "ID",
       "name": "Wait 2 mins",
-      "webhookId": "2d45377a-f907-42cd-bcfc-9d4babee611d"
+      "webhookId": "ID"
     },
     {
       "parameters": {
@@ -371,7 +371,7 @@
         -240,
         480
       ],
-      "id": "69211509-b96e-46d0-8d43-834e0ca68ad3",
+      "id": "ID",
       "name": "HTTP Request"
     },
     {
@@ -391,11 +391,11 @@
         144,
         496
       ],
-      "id": "be50665e-aeef-4ffc-9322-4be10fd868f9",
+      "id": "ID",
       "name": "Upload a video",
       "credentials": {
         "youTubeOAuth2Api": {
-          "id": "twJCVbYC7GOH4Idz",
+          "id": "ID",
           "name": "YouTube account"
         }
       }
@@ -430,7 +430,7 @@
         320,
         512
       ],
-      "id": "322bbf20-f20a-4624-94dc-dd1feb0c1ead",
+      "id": "ID",
       "name": "If"
     },
     {
@@ -450,7 +450,7 @@
         704,
         480
       ],
-      "id": "3e229ef3-fa7c-4939-b576-976ddeeafac6",
+      "id": "ID",
       "name": "Analytics"
     },
     {
@@ -462,7 +462,7 @@
           "parameters": [
             {
               "name": "xi-api-key",
-              "value": "sk_936c8449f2d190e4ac1e7314d5477233b7ee2643f2926fdc"
+              "value": "API KEY"
             }
           ]
         },
@@ -478,7 +478,7 @@
         -384,
         -160
       ],
-      "id": "d9f91cfd-687a-4317-b303-ce8b0a91cf1f",
+      "id": "EllevenLabsID",
       "name": "EllevenLabs"
     },
     {
@@ -492,7 +492,7 @@
           },
           "conditions": [
             {
-              "id": "94ed0aa5-3483-47df-9c93-c66cb7b37afb",
+              "id": "ID",
               "leftValue": "={{ $json.data.status }}",
               "rightValue": "=completed",
               "operator": {
@@ -511,7 +511,7 @@
         -480,
         -544
       ],
-      "id": "53a28e67-80c1-43b1-aa8a-f396b23694a8",
+      "id": "ID",
       "name": "If status != succeeded"
     },
     {
@@ -522,7 +522,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+              "value": "API KEY"
             }
           ]
         },
@@ -534,7 +534,7 @@
         -1056,
         -464
       ],
-      "id": "2d62e2b7-6624-439d-bf15-34392a77de60",
+      "id": "ID",
       "name": "Check status"
     },
     {
@@ -545,7 +545,7 @@
           "parameters": [
             {
               "name": "x-api-key",
-              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+              "value": "API KEY"
             }
           ]
         },
@@ -557,7 +557,7 @@
         -1440,
         -160
       ],
-      "id": "7f555ca3-8a6e-4cba-9550-998e612bb368",
+      "id": "ID",
       "name": "Check status-Img-to-Video"
     },
     {
@@ -571,7 +571,7 @@
           },
           "conditions": [
             {
-              "id": "d2580cd5-ceb0-4b7a-b8a6-495ab21b2ad6",
+              "id": "ID",
               "leftValue": "={{ $json.data.status }}",
               "rightValue": "completed",
               "operator": {
@@ -590,7 +590,7 @@
         -1088,
         -160
       ],
-      "id": "3fa18be9-6e0c-4e47-a008-fa8700f01887",
+      "id": "ID",
       "name": "If1"
     }
   ],
@@ -889,11 +889,11 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "0eab6594-e637-4269-81d5-12dc5a6cb58e",
+  "versionId": "ID",
   "meta": {
     "templateCredsSetupCompleted": true,
-    "instanceId": "edd5841cb062c60e20149496972a674749346f7715186eff56c98564b09e5f45"
+    "instanceId": "ID"
   },
-  "id": "BIFhLWqthh847gUA",
+  "id": "ID",
   "tags": []
 }
