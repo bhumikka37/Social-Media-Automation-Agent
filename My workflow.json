@@ -1,0 +1,899 @@
+{
+  "name": "My workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "What content ideas you want to generate?",
+        "formDescription": "Accepts Content Idea from user",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "What is your name?",
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "content_ideas",
+              "requiredField": true
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.2,
+      "position": [
+        -2544,
+        -832
+      ],
+      "id": "4d284ef5-1277-4c2f-83e8-df7a79286808",
+      "name": "On form submission",
+      "webhookId": "dec8f317-eed4-47aa-81df-4d2ebe3dd5d1"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.content_ideas.replace(/^\"|\"$/g, '') }}",
+        "hasOutputParser": true,
+        "messages": {
+          "messageValues": [
+            {
+              "message": "=You are an elite prompt-generation AI focused on crafting intense, hyper-detailed first-person experiences.Your outputs must never include quotation marks.  Skip any scene that involves waking up.  Avoid clothing-related actions entirely.  Exclude any mention of foot movement (e.g. stepping, walking).  Prioritize dramatic, unique, and cinematic moments over common daily routines.\n\nGuidelines:Each output is written from a first-person perspective and is designed to place the viewer inside the moment.  Use strong physical verbs like yanking, swinging, lifting, smashing, bracing, sprinting, dodging.  Include immersive words such as POV, first-person view, or GoPro-style.  \nKeep every output between 5 and 10 words long.  Never use quotation marks under any circumstance.  Focus on ultra-realistic, cinematic, high-stakes scenes that trigger strong visual or emotional imagery.  All prompts in a sequence should logically build across a single day, from start to finish.  Avoid vague or reflective thoughts—stick to tangible, physical actions and moments."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        -2272,
+        -768
+      ],
+      "id": "0b4a57bf-c036-4f3d-81bb-58e2f81b3942",
+      "name": "Basic LLM Chain"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "gpt-4o-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -2464,
+        -544
+      ],
+      "id": "009a01e6-c083-4b37-91be-2cba707dd01a",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "Mx3vpPwzan7j0hMq",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "options": {
+          "numberOfItems": 1
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserItemList",
+      "typeVersion": 1,
+      "position": [
+        -2256,
+        -496
+      ],
+      "id": "fa7f1e03-0f8a-4702-8fcc-3bd414b1004c",
+      "name": "Item List Output Parser"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.piapi.ai/api/v1/task",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={{ \n`{\n    \"model\": \"Qubico/flux1-dev\",\n    \"task_type\": \"txt2img\",\n    \"input\": {\n        \"prompt\": \"${$json.message.content}\",\n        \"width\": 540,\n        \"height\": 960\n    }\n}` \n}}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1584,
+        -496
+      ],
+      "id": "278c628b-d7e5-4bcb-b2da-2fb42bf15866",
+      "name": "Text to Image"
+    },
+    {
+      "parameters": {
+        "amount": 10
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1264,
+        -464
+      ],
+      "id": "4bf3ed9c-1b78-43a5-865a-a7db332fcc98",
+      "name": "wait 3 mins",
+      "webhookId": "2a601338-d32d-4feb-8ad2-89674e916b1f"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.piapi.ai/api/v1/task/{{ $json.data.task_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        -512
+      ],
+      "id": "77193a08-ee6e-45d0-bcab-33d4d2d74fd4",
+      "name": "Get Image"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.piapi.ai/api/v1/task",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n    \"model\": \"kling\",\n    \"task_type\": \"video_generation\",\n    \"input\": {\n        \"prompt\": \"{{ $json.data.input.prompt }}\",\n        \"negative_prompt\": \"bad quality\",\n        \"cfg_scale\": 0.65,\n        \"duration\": 5,\n        \"aspect_ratio\": \"1:1\",\n        \"image_url\": \"{{ $json.data.output.image_url }}\",\n        \"camera_control\": {\n            \"type\": \"simple\",\n            \"config\": {\n                \"horizontal\": 0,\n                \"vertical\": 0,\n                \"pan\": 0,\n                \"tilt\": 0,\n                \"roll\": 0,\n                \"zoom\": 0\n            }\n        },\n        \"mode\": \"std\"\n    },\n    \"config\": {}\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -2112,
+        -160
+      ],
+      "id": "850e7ad6-87cb-43c6-98b2-ac7764488ef5",
+      "name": "Image to Video"
+    },
+    {
+      "parameters": {
+        "amount": 8
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        -1840,
+        -160
+      ],
+      "id": "f7f2fa48-9098-45a6-ad78-5031dcf6d6c9",
+      "name": "Wait 8 mins",
+      "webhookId": "d4837017-0292-486a-b4eb-7630cbd6248b"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.piapi.ai/api/v1/task/{{ $json.data.task_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -736,
+        -144
+      ],
+      "id": "dd3ddb80-3094-4a59-b3da-01c2c28f499e",
+      "name": "Get Video"
+    },
+    {
+      "parameters": {
+        "modelId": {
+          "__rl": true,
+          "value": "gpt-4o-mini",
+          "mode": "list",
+          "cachedResultName": "GPT-4O-MINI"
+        },
+        "messages": {
+          "values": [
+            {
+              "content": "=You are an advanced prompt-generation AI specializing in expanding short POV (point-of-view) image prompt ideas into detailed, hyper-realistic prompts optimized for image-generation models like Flux and MidJourney. Your task is to take a brief input and transform it into a rich, cinematic, immersive prompt that strictly adheres to a first-person perspective, making the viewer feel as if they are physically present in the scene. This is the short prompt idea you need to expand upon: {{ $json.text }}\n\nEvery prompt has two sections:\n1. In the foreground, show and describe the hands, limbs, or feet of the viewer. Must start with \"First person view POV GoPro shot of [relevant limb]...\"\n2. In the background, describe the scenery. Must start with \"In the background, [describe scenery]\"\n\nMost Important Guidelines:- Every image must be a first-person perspective shot—the viewer must feel like they are experiencing the moment themselves, not just observing it.- A visible limb (hands or feet) must always be present and actively engaged in the environment—whether gripping, reaching, pushing, lifting, or interacting in a natural way.- The framing must be dynamic and interactive, mimicking real-world human vision—ensuring motion, depth, and immersion similar to a GoPro or head-mounted camera shot. \n\nOther Key Guidelines:- Full-body awareness: The prompt should subtly remind the viewer that they have a physical presence—mentioning sensations like weight shifting, breath fogging in the cold, or fingers trembling from adrenaline.\nSensory depth: The prompt should engage multiple senses (sight, touch, temperature, sound, even smell) to heighten realism.- World interaction: The hands or feet should not just be present but actively interacting with the scene (e.g., clutching, adjusting, stepping forward, brushing against surfaces).- Keep prompts under 1000 characters in a single, cinematic sentence with no extra formatting, explanations, or unnecessary output. "
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -2080,
+        -496
+      ],
+      "id": "b2174521-1c44-444e-b2c9-8650228d7dbd",
+      "name": "Generate Prompts",
+      "credentials": {
+        "openAiApi": {
+          "id": "Mx3vpPwzan7j0hMq",
+          "name": "n8n free OpenAI API credits"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $json.data.task_id.replace(/[:.]/g,'-') + '-voice.mp3'}}\n",
+        "driveId": {
+          "__rl": true,
+          "value": "My Drive",
+          "mode": "list",
+          "cachedResultName": "My Drive",
+          "cachedResultUrl": "https://drive.google.com/drive/my-drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1NSHoKr69t594exhFd3Z7u4CEfvXMfHKj",
+          "mode": "list",
+          "cachedResultName": "n8n-assessment",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1NSHoKr69t594exhFd3Z7u4CEfvXMfHKj"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -128,
+        -64
+      ],
+      "id": "ab8a67de-51c6-4a6a-93e9-7394edfc5385",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "y0Y8WxMhSggHSHJT",
+          "name": "Google Drive account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "combine",
+        "combineBy": "combineByPosition",
+        "numberInputs": 3,
+        "options": {}
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        624,
+        -192
+      ],
+      "id": "15d40955-bb32-427c-9ead-65647546e467",
+      "name": "Merge Video Content"
+    },
+    {
+      "parameters": {
+        "jsCode": "return [\n  {\n    scene_titles: items.map(item => $(\"On form submission\").first().json.content_ideas),\n    video_urls : items.map(item => item.json.data.output.video_url),\n    sounds_urls : items.map(item => item.json.webContentLink)\n  } \n];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        80,
+        176
+      ],
+      "id": "cf12d4f1-fd14-4435-a6fe-0c662b36ec73",
+      "name": "Code"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.creatomate.com/v1/renders",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "Authorization",
+              "value": "Bearer 7b51350006c14db48dc9d98e8ed2e705e0cf2746a70435028ecd09da830b8964a1718341c42e51005001e42ce29187e8"
+            },
+            {
+              "name": "Content-Type",
+              "value": "application/json"
+            }
+          ]
+        },
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n   \"template_id\": \"d4f2cdbc-34ec-46d5-8da1-1a74b61a6d6d\",\n   \"modifications\": {      \n      \"Audio-1.source\": \"{{\n      $json.sounds_urls[0].replace(/^\"|\"$/g, '') }}\",\n      \"Audio-2.source\": \"{{\n      $json.sounds_urls[0].replace(/^\"|\"$/g, '') }}\",\n      \"Video-1.source\": \"{{\n      $json.video_urls[0].replace(/^\"|\"$/g, '') }}\",\n      \"Video-2.source\": \"{{\n      $json.video_urls[0].replace(/^\"|\"$/g, '') }}\",\n      \"Text-1.text\": \"{{\n      $json.scene_titles[0].replace(/^\"|\"$/g, '') }}\",\n      \"Text-2.text\": \"{{\n      $json.scene_titles[0].replace(/^\"|\"$/g, '') }}\"\n      \n   }\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        448,
+        192
+      ],
+      "id": "59c85f66-7844-4aad-90ff-8c0d5899bd6b",
+      "name": "Render Video"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        704,
+        224
+      ],
+      "id": "2185183f-b4fa-401e-8767-4f93e8192742",
+      "name": "Wait 2 mins",
+      "webhookId": "2d45377a-f907-42cd-bcfc-9d4babee611d"
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -240,
+        480
+      ],
+      "id": "69211509-b96e-46d0-8d43-834e0ca68ad3",
+      "name": "HTTP Request"
+    },
+    {
+      "parameters": {
+        "resource": "video",
+        "operation": "upload",
+        "title": "={{ $('On form submission').item.json['What content ideas you want to generate?'] }}",
+        "regionCode": "IN",
+        "categoryId": "24",
+        "options": {
+          "description": "={{ $('On form submission').item.json['What content ideas you want to generate?'] }}"
+        }
+      },
+      "type": "n8n-nodes-base.youTube",
+      "typeVersion": 1,
+      "position": [
+        144,
+        496
+      ],
+      "id": "be50665e-aeef-4ffc-9322-4be10fd868f9",
+      "name": "Upload a video",
+      "credentials": {
+        "youTubeOAuth2Api": {
+          "id": "twJCVbYC7GOH4Idz",
+          "name": "YouTube account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "62f46376-52c5-4702-b744-7b9d2fc519fc",
+              "leftValue": "={{ $json.uploadId }}",
+              "rightValue": "undefined",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        320,
+        512
+      ],
+      "id": "322bbf20-f20a-4624-94dc-dd1feb0c1ead",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "url": "https://youtube.googleapis.com/youtube/v3/videos",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        704,
+        480
+      ],
+      "id": "3e229ef3-fa7c-4939-b576-976ddeeafac6",
+      "name": "Analytics"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "=https://api.elevenlabs.io/v1/text-to-speech/JBFqnCBsd6RMkjVDRZzb?output_format=mp3_44100_128",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "xi-api-key",
+              "value": "sk_936c8449f2d190e4ac1e7314d5477233b7ee2643f2926fdc"
+            }
+          ]
+        },
+        "sendBody": true,
+        "contentType": "raw",
+        "rawContentType": "application/json",
+        "body": "={\n  \"text\": \"no voice {{ $('Generate Prompts').first().json.message.content.substring(0,440) }}\",\n  \"duration_seconds\": 5,\n  \"prompt_influence\": 0.6\n}\n",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -384,
+        -160
+      ],
+      "id": "d9f91cfd-687a-4317-b303-ce8b0a91cf1f",
+      "name": "EllevenLabs"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "94ed0aa5-3483-47df-9c93-c66cb7b37afb",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "=completed",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -480,
+        -544
+      ],
+      "id": "53a28e67-80c1-43b1-aa8a-f396b23694a8",
+      "name": "If status != succeeded"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.piapi.ai/api/v1/task/{{ $json.data.task_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1056,
+        -464
+      ],
+      "id": "2d62e2b7-6624-439d-bf15-34392a77de60",
+      "name": "Check status"
+    },
+    {
+      "parameters": {
+        "url": "=https://api.piapi.ai/api/v1/task/{{ $json.data.task_id }}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-api-key",
+              "value": "e1a7719c6c5bce959f85342666a0c00d379ff5da4ee81c48254d23f0cea7770a"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -1440,
+        -160
+      ],
+      "id": "7f555ca3-8a6e-4cba-9550-998e612bb368",
+      "name": "Check status-Img-to-Video"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "d2580cd5-ceb0-4b7a-b8a6-495ab21b2ad6",
+              "leftValue": "={{ $json.data.status }}",
+              "rightValue": "completed",
+              "operator": {
+                "type": "string",
+                "operation": "notEquals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -1088,
+        -160
+      ],
+      "id": "3fa18be9-6e0c-4e47-a008-fa8700f01887",
+      "name": "If1"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Item List Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "Basic LLM Chain",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Basic LLM Chain": {
+      "main": [
+        [
+          {
+            "node": "Generate Prompts",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Video Content",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Text to Image": {
+      "main": [
+        [
+          {
+            "node": "wait 3 mins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "wait 3 mins": {
+      "main": [
+        [
+          {
+            "node": "Check status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Image": {
+      "main": [
+        [
+          {
+            "node": "Image to Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Image to Video": {
+      "main": [
+        [
+          {
+            "node": "Wait 8 mins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 8 mins": {
+      "main": [
+        [
+          {
+            "node": "Check status-Img-to-Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Video": {
+      "main": [
+        [
+          {
+            "node": "EllevenLabs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Merge Video Content",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Generate Prompts": {
+      "main": [
+        [
+          {
+            "node": "Text to Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Merge Video Content",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "Merge Video Content": {
+      "main": [
+        [
+          {
+            "node": "Code",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Code": {
+      "main": [
+        [
+          {
+            "node": "Render Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Render Video": {
+      "main": [
+        [
+          {
+            "node": "Wait 2 mins",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait 2 mins": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload a video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload a video": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Analytics",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "EllevenLabs": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If status != succeeded": {
+      "main": [
+        [
+          {
+            "node": "wait 3 mins",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Image",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check status": {
+      "main": [
+        [
+          {
+            "node": "If status != succeeded",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check status-Img-to-Video": {
+      "main": [
+        [
+          {
+            "node": "If1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If1": {
+      "main": [
+        [
+          {
+            "node": "Wait 8 mins",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Get Video",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "versionId": "0eab6594-e637-4269-81d5-12dc5a6cb58e",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "edd5841cb062c60e20149496972a674749346f7715186eff56c98564b09e5f45"
+  },
+  "id": "BIFhLWqthh847gUA",
+  "tags": []
+}
