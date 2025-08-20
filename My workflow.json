@@ -132,7 +132,7 @@
       ],
       "id": "ID",
       "name": "wait 3 mins",
-      "webhookId": "2a601338-d32d-4feb-8ad2-89674e916b1f"
+      "webhookId": "ID"
     },
     {
       "parameters": {
@@ -154,7 +154,7 @@
         -240,
         -512
       ],
-      "id": "77193a08-ee6e-45d0-bcab-33d4d2d74fd4",
+      "id": "ID",
       "name": "Get Image"
     },
     {
@@ -197,7 +197,7 @@
       ],
       "id": "ID",
       "name": "Wait 8 mins",
-      "webhookId": "d4837017-0292-486a-b4eb-7630cbd6248b"
+      "webhookId": "ID"
     },
     {
       "parameters": {
